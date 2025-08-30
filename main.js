@@ -1,7 +1,7 @@
 
-let current;
-let num1;
-let num2;
+let current = "";
+let num1 = null;
+let num2 = null;
 let operator;
 
 //store
@@ -20,14 +20,49 @@ when an operator is clicked it confirms and sets the number
 
 
 */
- let operators = document.querySelectorAll(".operators")
- let buttons = document.querySelectorAll(".operators")
+ let operators = document.querySelector(".operators")
+ let numbers = document.querySelector(".numbers")
  let display = document.querySelector("#display")
 
- operators.forEach((node)=>{
-    console.log(node)
+opChildren = [...operators.children];
+
+opChildren.forEach((node)=>{
+    
     node.addEventListener("click",(e) =>{
-        
+        if(node.textContent === "=") operator = node.textContent;
+        if(!num1 && !num2) {
+            num1 = current;
+            
+        } 
+        else {num2 = current}
+        if(num1 && num2) {
+            result = operate(operator, num1, num2);
+            num1 = result;
+            num2 = null;            
+            display.textContent = result;
+        }
+        if(node.textContent === "=") {
+          num1 =  null
+        }
+    })
+ })
+
+ numChildren = [...numbers.children];
+
+numChildren.forEach((node)=>{
+    
+    node.addEventListener("click",(e) =>{
+     if(!num1){
+         current = parseInt(current + node.textContent)
+         display.textContent = current;
+         console.log(current)
+        } else {
+         current = parseInt(node.textContent)
+         display.textContent = current;
+         console.log(current)
+        }
+
+
     })
  })
 
