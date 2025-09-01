@@ -4,7 +4,6 @@ let num1 = null;
 let num2 = null;
 let operator;
 
-//store
 /*
 create event handlers for numbers and operators
 when number is clicked we just keep updating current and appending numbers
@@ -17,49 +16,60 @@ when an operator is clicked it confirms and sets the number
         we update the display with the result
         we clear num 2 
     else it waits for next input
-
-
 */
- let operators = document.querySelector(".operators")
- let numbers = document.querySelector(".numbers")
- let display = document.querySelector("#display")
 
-opChildren = [...operators.children];
+ let operators = document.querySelector(".operators");
+ let numbers = document.querySelector(".numbers");
+ let display = document.querySelector("#display");
+ let clearBttn = document.querySelector("#clear");
 
-opChildren.forEach((node)=>{
+ clearBttn.addEventListener("click", ()=>{
+    num1 = null;
+    num2 = null
+    display.textContent = null;
+    current = "";
+ })
+
+ opChildren = [...operators.children];
+
+
+ opChildren.forEach((node)=>{
     
     node.addEventListener("click",(e) =>{
-        if(node.textContent === "=") operator = node.textContent;
+       console.log(num2)
         if(!num1 && !num2) {
-            num1 = current;
-            
+            console.log("in IF1")
+            num1 = current;            
         } 
         else {num2 = current}
         if(num1 && num2) {
-            result = operate(operator, num1, num2);
+            console.log("in IF2")    
+            result = operate(operator, parseInt(num1), parseInt(num2));
             num1 = result;
             num2 = null;            
             display.textContent = result;
         }
-        if(node.textContent === "=") {
-          num1 =  null
+        
+        if(node.textContent !== "=") {operator = node.textContent;}
+        else{
+          num1 =  null;
         }
+        current = "";
     })
  })
 
- numChildren = [...numbers.children];
+numChildren = [...numbers.children];
 
 numChildren.forEach((node)=>{
     
     node.addEventListener("click",(e) =>{
      if(!num1){
-         current = parseInt(current + node.textContent)
+         current = current + node.textContent
          display.textContent = current;
-         console.log(current)
+         
         } else {
-         current = parseInt(node.textContent)
-         display.textContent = current;
-         console.log(current)
+         current = node.textContent;
+         display.textContent = current;         
         }
 
 
@@ -76,28 +86,35 @@ function numberClick(){
 
 function operate(operator,num1,num2){
 console.log(operator,num1,num2);
-
+let ans
     switch (operator) {
         case "+":
-            console.log("+");
-           return add(num1,num2);
-            
+           console.log("+");
+           ans = add(num1,num2);
+           break;
         
         case "-":
-            return subtract(num1,num2);
-            
+            ans = subtract(num1,num2);
+            break;
 
         case "x":
-            return multiply(num1,num2);
-        
+            ans = multiply(num1,num2);
+            break;
         
         case "\\":
-            return divide(num1,num2);
-           
+        console.log("in switch")    
+        if(num2 === 0) return "What bastard doth not!"  
+            ans = divide(num1,num2);
+           break;
 
         default:
             break;
     }
+
+    if(ans % 1 !==0 ){
+        return ans.toFixed(2)
+    } else{ return ans}
+    
 
 }
 
